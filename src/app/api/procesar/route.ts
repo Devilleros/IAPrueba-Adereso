@@ -146,6 +146,7 @@ export async function POST(req: NextRequest) {
                         arrDatos.elementos.push(dataUtil);
                         i ++
                     }
+                    if(cont>50){i++}
           
                   } catch (error) {
                     console.error(`Error procesando ${element.name}:`, error);
@@ -183,6 +184,7 @@ export async function POST(req: NextRequest) {
                         arrDatos.elementos.push(dataUtil);
                         i ++
                     }
+                    if(cont>50){i++}
           
                   } catch (error) {
                     console.error(`Error procesando ${element.name}:`, error);

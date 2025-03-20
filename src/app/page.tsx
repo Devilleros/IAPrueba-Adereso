@@ -55,7 +55,7 @@ export default function Home (){
   }
   const handleResIA = async ()=>{
     const PromptCompleto = {enunciado : JSON.stringify(data), datos: JSON.stringify(consApi)}
-    console.log(PromptCompleto);
+    //console.log(PromptCompleto);
     
     try {
       const respuesta = await fetch("/api/respuestaIA",{
@@ -72,6 +72,30 @@ export default function Home (){
       
     }
   }
+
+  const handleEnv = async ()=>{
+    const datosAEnviar = {
+      problem_id: data.id,
+      answer: Number( soluIA.choices[0].message.content)
+    }
+    try {
+      const respuesta = await fetch("/api/enviarResp",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosAEnviar)
+      })
+      const nuevosDatos = await respuesta.json()
+      console.log(nuevosDatos);
+      
+      setData(nuevosDatos.next_problem); //setData(datos.data.problem);
+      setProblem(nuevosDatos.next_problem.problem)
+    } catch (error) {
+      
+}
+  }
+
   return <>
     <Button onClick={handleEnu}>Consulta</Button>
     <p>Haz clic en el botón para consultar la API.</p>
@@ -99,6 +123,7 @@ export default function Home (){
       <pre>
         {JSON.stringify(soluIA.choices[0].message.content,null,2)}
       </pre>
+      <Button onClick={handleEnv}>enviar respuesta</Button>
     </>
   )}
   </>

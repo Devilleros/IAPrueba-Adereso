@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
     //console.log(request);
 
     
-    const prompt = `Dado el siguiente enunciado: "${request.enunciado}", extrae solo el valor numérico de la solución con hasta 10 decimales. datos: ${request.datos}. solo dame la respuesta numerica`;;
+    const prompt = `Analiza el siguiente enunciado: "${request.enunciado}" y los datos: ${request.datos}. 
+      Devuelve únicamente el número de la solución con hasta 10 decimales.
+      No incluyas texto adicional, ejemplos ni explicaciones, responde exclusivamente con el número. Ejemplo de salida esperada: 4569.1234567890
+     `;
 
     //const prompt = `Te pasare los datos de un enunciado devuelveme solo el valor numerico, con hasta 10 decimales si aplica${request}`
 
