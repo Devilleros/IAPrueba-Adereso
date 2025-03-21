@@ -76,14 +76,22 @@ export async function POST(req: NextRequest) {
   const names: Names[] = parsedContent.elementos
     .filter((item) => item.name)
     .map((item) => {
-      return { name: item.name, fran: item.franquicia || item.franchise, planet: item.planet };
+      if(item.franquicia === "pokemon"){
+        return { name: item.name?.toLowerCase(), fran: item.franquicia || item.franchise, planet: item.planet };
+      }else{
+        return { name: item.name, fran: item.franquicia || item.franchise, planet: item.planet }
+      }
     });
 
   async function processElements(): Promise<ParsedContent> {
     const arrDatos: ParsedContent = { elementos: [] };
 
+    // console.log(names);
+
     for (const element of names) {
       if (element.fran === "pokemon") {
+        // console.log("entro");
+        
         try {
           const res = await fetch(
             `https://pokeapi.co/api/v2/pokemon/${element.name}`,
@@ -114,9 +122,9 @@ export async function POST(req: NextRequest) {
         }
       } else {
         if (element.planet === "si") {
-            let i=0
+            let i=true
             let cont= 0
-            while (i === 0){
+            while (i){
                 cont ++
                 try {
                     const res = await fetch(
@@ -144,9 +152,9 @@ export async function POST(req: NextRequest) {
                             population: data.population
                         };
                         arrDatos.elementos.push(dataUtil);
-                        i ++
+                        i =false
                     }
-                    if(cont>50){i++}
+                    if(cont>50){i=false}
           
                   } catch (error) {
                     console.error(`Error procesando ${element.name}:`, error);
@@ -154,9 +162,9 @@ export async function POST(req: NextRequest) {
             }
             //arrDatos.elementos.push(element);
         } else {
-            let i=0
+            let i=true
             let cont= 0
-            while (i === 0){
+            while (i){
                 cont ++
                 try {
                     const res = await fetch(
@@ -182,9 +190,9 @@ export async function POST(req: NextRequest) {
                             //homeworld: data.homeworld
                         };
                         arrDatos.elementos.push(dataUtil);
-                        i ++
+                        i = false
                     }
-                    if(cont>50){i++}
+                    if(cont>75){i=false}
           
                   } catch (error) {
                     console.error(`Error procesando ${element.name}:`, error);
